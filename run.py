@@ -20,7 +20,7 @@ def asign_oppose_and_support_bills_count(legislators, vote_results):
 
     legislators_with_votes = legislators.copy()
 
-    legislators_with_votes["suported_bills"] = suported
-    legislators_with_votes["opposed_bills"] = opposed
+    legislators_with_votes["num_supported_bills"] = suported
+    legislators_with_votes["num_opposed_bills"] = opposed
 
     return legislators_with_votes
