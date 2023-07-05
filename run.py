@@ -7,15 +7,13 @@ def asign_oppose_and_support_bills_count(legislators, vote_results):
     opposed = []
 
     for legislator_id in legislators["id"]:
-        support_votes = vote_results[
-            (vote_results["legislator_id"] == legislator_id)
-            & (vote_results["vote_type"] == SUPPORT_VOTE_FLAG)
-        ]
+        is_same_legislator = vote_results["legislator_id"] == legislator_id
 
-        oppose_votes = vote_results[
-            (vote_results["legislator_id"] == legislator_id)
-            & (vote_results["vote_type"] == OPPOSE_VOTE_FLAG)
-        ]
+        is_supporting = vote_results["vote_type"] == SUPPORT_VOTE_FLAG
+        is_opposing = vote_results["vote_type"] == OPPOSE_VOTE_FLAG
+
+        support_votes = vote_results[is_same_legislator & is_supporting]
+        oppose_votes = vote_results[is_same_legislator & is_opposing]
 
         suported.append(len(support_votes))
         opposed.append(len(oppose_votes))
