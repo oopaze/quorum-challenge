@@ -9,13 +9,13 @@ vote_results = pd.read_csv("./input-files/vote_results.csv")
 votes = pd.read_csv("./input-files/votes.csv")
 
 
-def get_sponsor_name(sponsor_id):
+def get_sponsor_name(sponsor_id, legislators=legislators):
     if sponsor_id in legislators["id"].values:
         return legislators[legislators["id"] == sponsor_id].iloc[0]["name"]
     return "Unknown"
 
 
-def get_bills_votes():
+def get_bills_votes(bills, votes, vote_results):
     suported = []
     opposed = []
 
@@ -48,7 +48,7 @@ def get_bills_votes():
     return bills_votes
 
 
-def asign_oppose_and_support_bills_count():
+def asign_oppose_and_support_bills_count(legislators, vote_results):
     suported = []
     opposed = []
 
