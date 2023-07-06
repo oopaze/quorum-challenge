@@ -1,8 +1,51 @@
+import pandas as pd
+
 SUPPORT_VOTE_FLAG = 1
 OPPOSE_VOTE_FLAG = 2
 
+bills = pd.read_csv("./files/bills.csv")
+legislators = pd.read_csv("./files/legislators.csv")
+vote_results = pd.read_csv("./files/vote_results.csv")
+votes = pd.read_csv("./files/votes.csv")
 
-def asign_oppose_and_support_bills_count(legislators, vote_results):
+
+def get_sponsor_name(sponsor_id):
+    if sponsor_id in legislators["id"].values:
+        return legislators[legislators["id"] == sponsor_id].iloc[0]["name"]
+    return "Unknown"
+
+
+def get_bills_votes():
+    bills_votes = bills.copy()
+    bills_votes["primary_sponsor"] = bills_votes["sponsor_id"].apply(get_sponsor_name)
+
+    suported = []
+    opposed = []
+
+    for bill_id in bills_votes["id"]:
+        if bill_id not in votes["bill_id"].values:
+            continue
+
+        vote_id = votes[votes["bill_id"] == bill_id].iloc[0]["id"]
+
+        same_vote_id = vote_results["vote_id"] == vote_id
+        is_supporting = vote_results["vote_type"] == SUPPORT_VOTE_FLAG
+        is_opposing = vote_results["vote_type"] == OPPOSE_VOTE_FLAG
+
+        support_votes = vote_results[same_vote_id & is_supporting]
+        oppose_votes = vote_results[same_vote_id & is_opposing]
+
+        suported.append(len(support_votes))
+        opposed.append(len(oppose_votes))
+
+    bills_votes["supporter_count"] = suported
+    bills_votes["opposer_count"] = opposed
+    del bills_votes["sponsor_id"]
+
+    return bills_votes
+
+
+def asign_oppose_and_support_bills_count():
     suported = []
     opposed = []
 
