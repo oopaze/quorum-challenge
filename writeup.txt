@@ -1,5 +1,4 @@
 1. Discuss your solution’s time complexity. What tradeoffs did you make?
-
   The time complexity of both functions is `O(n*m)`. For the `asign_oppose_and_support_bills_count` `n` will represent the number of **legislators** we have and `m` the number of **vote_results** we have. For the `get_bills_votes` we will have the same things, the only change is related to the `n` which now represents the number of **bills**.
   Since I just use it eventually, I had to use `for` to go into the **bills** and **legislators** lists. But I think we have a way to solve it avoiding the use of `for` and solving this problem only using `pandas`.
 
